@@ -15,12 +15,12 @@ const configuration = {
 		appDir: true
 	},
 	swcMinify: true,
-	i18n: {
-		locales: ["en"],
-		defaultLocale: "en"
-	},
+	// i18n: {
+	// 	locales: ["en"],
+	// 	defaultLocale: "en"
+	// },
 	reactStrictMode: true,
-	sassOptions: { includePaths: [path.join(__dirname, "styles")] },
+	// sassOptions: { includePaths: [path.join(__dirname, "styles")] },
 	images: {
 		domains: ["res.imagekit.io", "ik.imagekit.io", "rickandmortyapi.com", "i.giphy.com"],
 		minimumCacheTTL: 3600
