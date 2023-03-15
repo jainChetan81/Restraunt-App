@@ -1,25 +1,26 @@
 import Navbar from "@/components/Navbar";
 import Link from "next/link";
 
-const RestaurantSlugMenuPage = () => {
+const RestaurantSlugMenuPage = () =>
+{
 	return (
 		<main className="bg-gray-100 min-h-screen w-screen">
 			<main className="max-w-screen-2xl m-auto bg-white">
-			<Navbar />
+				<Navbar />
 				<div className="h-96 overflow-hidden">
 					<div className="bg-center bg-gradient-to-r from-[#0f1f47] to-[#5f6984] h-full flex justify-center items-center">
-						<h1 className="text-7xl text-white captitalize text-shadow text-center">Milestones Grill (Toronto)</h1>
+						<h1 className="text-7xl text-white capitalize text-shadow text-center">Milestones Grill (Toronto)</h1>
 					</div>
 				</div>
 				<div className="flex m-auto w-2/3 justify-between items-start 0 -mt-11">
 					<div className="bg-white w-[100%] rounded p-3 shadow">
 						<nav className="flex text-reg border-b pb-2">
-							<a href="" className="mr-7">
+							<Link href="" className="mr-7">
 								Overview
-							</a>
-							<a href="" className="mr-7">
+							</Link>
+							<Link href="" className="mr-7">
 								Menu
-							</a>
+							</Link>
 						</nav>
 						<main className="bg-white mt-5">
 							<div>

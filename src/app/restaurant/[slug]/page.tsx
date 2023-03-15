@@ -4,9 +4,9 @@ import Header from "./components/Header";
 import Images from "./components/Images";
 import Rating from "./components/Rating";
 import RestaurantNavbar from "./components/RestaurantNavbar";
-import Reviews from "./components/Reviews";
-import Title from "./components/Title";
 import ReservationCard from "./components/ReservationCard";
+import Title from "./components/Title";
+import Reviews from "./components/Reviews";
 
 const RestaurantDetailsPage = () =>
 {
@@ -21,11 +21,13 @@ const RestaurantDetailsPage = () =>
 						<Title />
 						<Rating />
 						<Description />
-						<ReservationCard />
-						{/* IMAGES */} {/* REVIEWS */}
 						<Images />
+						<Reviews />
+						{/* IMAGES */} {/* REVIEWS */}
 					</div>
-					<Reviews />
+					<div className="w-[27%] relative text-reg">
+						<ReservationCard />
+					</div>
 				</div>
 			</div>
 		</main>
