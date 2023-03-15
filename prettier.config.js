@@ -1,7 +1,6 @@
-/** @type {import("prettier").Config} */
 module.exports = {
 	printWidth: 140,
-	endOfLine: "auto",
+	endOfLine: "if",
 	trailingComma: "none",
 	semi: true,
 	doubleQuote: true,
@@ -10,5 +9,6 @@ module.exports = {
 	jsxDoubleQuote: true,
 	singleQuote: false,
 	useTabs: true,
-	tabWidth: 2
+	tabWidth: 2,
+	plugins: [require("prettier-plugin-tailwindcss")]
 };

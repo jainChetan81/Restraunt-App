@@ -1,4 +1,7 @@
-const RestaurantCards = () => {
+import Link from "next/link";
+
+const RestaurantCards = () =>
+{
 	return (
 		<div className="w-5/6">
 			<div className="border-b flex pb-5">
@@ -17,7 +20,9 @@ const RestaurantCards = () => {
 						</div>
 					</div>
 					<div className="text-red-600">
-						<a href="">View more information</a>
+						<Link href="/restaurant/milestone">
+							View more information
+						</Link>
 					</div>
 				</div>
 			</div>
