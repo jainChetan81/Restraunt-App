@@ -9,3 +9,55 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Restaurant {
+  id          Int      @id @default(autoincrement())
+  name        String
+  main_image  String
+  description String
+  images      String[]
+  open_time   String
+  close_time  String
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+  slug        String   @unique
+  price       PRICE
+  Items       Items[]
+  location_id Int
+  Location    Location @relation(fields: [location_id], references: [id])
+  cusisne_id  Int
+  Cuisine     Cuisine  @relation(fields: [cusisne_id], references: [id])
+}
+
+model Items {
+  id            Int        @id @default(autoincrement())
+  name          String
+  price         String
+  restaurant    Restaurant @relation(fields: [restaurant_id], references: [id])
+  restaurant_id Int
+  description   String
+  created_at    DateTime   @default(now())
+  updated_at    DateTime   @updatedAt
+}
+
+model Location {
+  id         Int          @id @default(autoincrement())
+  name       String
+  created_at DateTime     @default(now())
+  updated_at DateTime     @updatedAt
+  Restaurant Restaurant[]
+}
+
+model Cuisine {
+  id         Int          @id @default(autoincrement())
+  name       String
+  created_at DateTime     @default(now())
+  updated_at DateTime     @updatedAt
+  Restaurant Restaurant[]
+}
+
+enum PRICE {
+  CHEAP
+  MEDIUM
+  EXPENSIVE
+}

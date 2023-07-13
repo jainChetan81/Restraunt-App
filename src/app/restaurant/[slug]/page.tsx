@@ -1,3 +1,4 @@
+import { getSingleRestaurant } from "@/server/fetcher";
 import Description from "./components/Description";
 import Images from "./components/Images";
 import Rating from "./components/Rating";
@@ -6,11 +7,13 @@ import RestaurantNavbar from "./components/RestaurantNavbar";
 import Reviews from "./components/Reviews";
 import Title from "./components/Title";
 
-const RestaurantDetailsPage = () => {
+const RestaurantDetailsPage = async ({ params }: { params: { slug: string } }) => {
+	const restaurant = await getSingleRestaurant(params.slug)
+	console.log({ restaurant })
 	return (
 		<>
 			<div className="bg-white w-[70%] rounded p-3 shadow">
-				<RestaurantNavbar />
+				<RestaurantNavbar slug={params.slug} />
 				<Title />
 				<Rating />
 				<Description />
