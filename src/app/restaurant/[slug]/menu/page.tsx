@@ -1,6 +1,8 @@
+import { fetchRestaurantItems } from "@/server/fetcher";
 import Link from "next/link";
 
-const RestaurantSlugMenuPage = () => {
+const RestaurantSlugMenuPage = async ({ params }: { params: { slug: string } }) => {
+	const items = await fetchRestaurantItems(params.slug);
 	return (
 		<>
 			<div className="bg-white w-[100%] rounded p-3 shadow">
