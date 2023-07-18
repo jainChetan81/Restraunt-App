@@ -11,10 +11,6 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const configuration = {
-	experimental: {
-		appDir: true
-	},
-	swcMinify: true,
 	// i18n: {
 	// 	locales: ["en"],
 	// 	defaultLocale: "en"
@@ -22,7 +18,7 @@ const configuration = {
 	reactStrictMode: true,
 	// sassOptions: { includePaths: [path.join(__dirname, "styles")] },
 	images: {
-		domains: ["res.imagekit.io", "ik.imagekit.io", "rickandmortyapi.com", "i.giphy.com"],
+		domains: ["res.imagekit.io", "ik.imagekit.io", "rickandmortyapi.com", "i.giphy.com","resizer.otstatic.com"],
 		minimumCacheTTL: 3600
 	},
 	/**

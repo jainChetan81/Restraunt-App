@@ -56,3 +56,29 @@ export const fetchRestaurantItems = async (slug: string) => {
 }
 
 export type RestaurantItems = Awaited<ReturnType<typeof fetchRestaurantItems>>;
+
+export const fetchRestaurantByLocation = async (city: string) => {
+    console.log({ city })
+    if (!city) return await getRestaurants();
+    const restaurants = await prisma.restaurant.findMany({
+        where: {
+            Location: {
+                name: {
+                    equals: city.toLocaleLowerCase()
+                }
+            }
+        },
+        select: {
+            id: true,
+            name: true,
+            main_image: true,
+            Cuisine: true,
+            Location: true,
+            price: true,
+            slug: true,
+        }
+    });
+    if (!restaurants) throw new Error("No Restaurants found")
+    return restaurants;
+}
+export type RestaurantByLocation = Awaited<ReturnType<typeof fetchRestaurantByLocation>>;
