@@ -4,7 +4,6 @@ import "./globals.css";
 export const metadata = {
 	title: "Restaurant App",
 	description: "Open Table Restaurant App",
-	favicon: "/favicon.ico",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

@@ -1,3 +1,4 @@
+import Header from "@/components/Header";
 
 export const metadata = {
     title: "Search | Open Table",
@@ -7,6 +8,7 @@ export const metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
         <>
+            <Header />
             {children}
         </>
     );

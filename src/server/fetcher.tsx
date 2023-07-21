@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { type PRICE, PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 export const getRestaurants = async () => {
@@ -58,7 +58,6 @@ export const fetchRestaurantItems = async (slug: string) => {
 export type RestaurantItems = Awaited<ReturnType<typeof fetchRestaurantItems>>;
 
 export const fetchRestaurantByLocation = async (city: string) => {
-    console.log({ city })
     if (!city) return await getRestaurants();
     const restaurants = await prisma.restaurant.findMany({
         where: {
@@ -82,3 +81,72 @@ export const fetchRestaurantByLocation = async (city: string) => {
     return restaurants;
 }
 export type RestaurantByLocation = Awaited<ReturnType<typeof fetchRestaurantByLocation>>;
+
+export const fetchAllLocations = async () => {
+    const locations = await prisma.location.findMany({
+        select: {
+            name: true
+        }
+    });
+    if (!locations) throw new Error("No locations found");
+    return locations;
+}
+export type AllLocations = Awaited<ReturnType<typeof fetchAllLocations>>;
+
+export const fetchAllCuisines = async () => {
+    const cuisines = await prisma.cuisine.findMany({
+        select: {
+            name: true
+        }
+    });
+    if (!cuisines) throw new Error("No cuisines found");
+    return cuisines;
+}
+export type AllCuisines = Awaited<ReturnType<typeof fetchAllCuisines>>;
+
+export const fetchRestaurantByParams = async (city?: string, cuisine?: string, price?: PRICE) => {
+    // Build the where clause dynamically
+    const whereClause: any = {};
+
+    // Check for city
+    if (city && city?.trim()?.length > 0) {
+        whereClause.Location = {
+            name: {
+                equals: city.toLocaleLowerCase()
+            }
+        };
+    }
+
+    // Check for cuisine
+    if (cuisine && cuisine?.trim()?.length > 0) {
+        whereClause.Cuisine = {
+            name: {
+                equals: cuisine.toLocaleLowerCase()
+            }
+        };
+    }
+
+    // Check for price
+    if (price !== undefined && price !== null) {
+        whereClause.price = {
+            equals: price
+        };
+    }
+    console.log({ whereClause })
+
+    const restaurants = await prisma.restaurant.findMany({
+        where: whereClause,
+        select: {
+            id: true,
+            name: true,
+            main_image: true,
+            Cuisine: true,
+            Location: true,
+            price: true,
+            slug: true,
+        }
+    });
+
+    if (!restaurants) throw new Error("No Restaurants found")
+    return restaurants;
+}
