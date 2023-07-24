@@ -1,6 +1,5 @@
 import { type PRICE, PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
-
 export const getRestaurants = async () => {
     const restaurants = await prisma.restaurant.findMany({
         select: {
@@ -11,6 +10,11 @@ export const getRestaurants = async () => {
             Location: true,
             price: true,
             slug: true,
+            Review: {
+                select: {
+                    rating: true
+                }
+            }
         }
 
     });
@@ -34,6 +38,7 @@ export const getSingleRestaurant = async (slug: string) => {
             slug: true,
             description: true,
             images: true,
+            Review: true
         }
     });
     if (!restaurant) throw new Error("Restaurant not found");
@@ -75,6 +80,11 @@ export const fetchRestaurantByLocation = async (city: string) => {
             Location: true,
             price: true,
             slug: true,
+            Review: {
+                select: {
+                    rating: true
+                }
+            }
         }
     });
     if (!restaurants) throw new Error("No Restaurants found")
@@ -144,6 +154,11 @@ export const fetchRestaurantByParams = async (city?: string, cuisine?: string, p
             Location: true,
             price: true,
             slug: true,
+            Review: {
+                select: {
+                    rating: true
+                }
+            }
         }
     });
 
