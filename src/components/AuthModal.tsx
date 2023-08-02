@@ -2,7 +2,7 @@
 import { Alert, CircularProgress } from '@mui/material';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import AuthModalInputs from './AuthModalInputs';
 
 const style = {

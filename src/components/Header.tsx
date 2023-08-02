@@ -1,11 +1,11 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { type FormEvent, useState } from "react";
 const Header = () => {
 	const router = useRouter();
 	const [location, setLocation] = useState("");
 
-	const changeLocation = (e: any) => {
+	const changeLocation = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		if (!location) return
 		router.push(`/search?city=${location}`)
