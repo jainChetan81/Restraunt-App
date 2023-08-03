@@ -23,13 +23,13 @@ export default function AuthModal({ isSignin = false }: { isSignin?: boolean }) 
     // const { signin, signup } = useAuth();
     // const { loading, data, error } = useContext(AuthenticationContext);
 
-    const handleClick = () => {
-        // if (isSignin) {
-        //     signin({ email: inputs.email, password: inputs.password }, handleClose);
-        // } else {
-        //     signup(inputs, handleClose);
-        // }
-    };
+    // const handleClick = () => {
+    // if (isSignin) {
+    //     signin({ email: inputs.email, password: inputs.password }, handleClose);
+    // } else {
+    //     signup(inputs, handleClose);
+    // }
+    // };
 
     return (
         <div>

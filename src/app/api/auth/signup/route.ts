@@ -1,25 +1,40 @@
-import type { SchemaType } from "@/utils/validation-schemas";
+import { env } from "@/env/server.mjs";
+import { SignupSchema, type SchemaType } from "@/utils/validation-schemas";
 import { PrismaClient } from "@prisma/client";
+import bcrypt from "bcrypt";
+import { setCookie } from "cookies-next";
+import * as jose from "jose";
 import { NextResponse } from "next/server";
 
 const prisma = new PrismaClient();
 export async function POST(request: Request) {
 	const body = (await request.json()) as SchemaType<false>;
+	const error = SignupSchema.safeParse(body);
+	if (!error.success) {
+		console.log(error);
+		return new NextResponse(JSON.stringify({ error: error.error.format() }), { status: 401 });
+	}
 	const userWithEmail = await prisma.user.findUnique({
 		where: { email: body.email }
 	});
 	if (userWithEmail) {
-		return NextResponse.json({ error: "Email already exists" });
+		return new NextResponse(JSON.stringify({ error: "Email already exists" }), { status: 401 });
 	}
+	const hashedPassword = await bcrypt.hash(body.password, 10);
+	const alg = "HS256";
+	const secret = new TextEncoder().encode(env.JWT_SECRET);
+	const token = await new jose.SignJWT({ email: body.email }).setProtectedHeader({ alg }).setExpirationTime("24h").sign(secret);
 	const user = await prisma.user.create({
 		data: {
 			email: body.email,
-			password: body.password,
-			first_name: body.firstName,
-			last_name: body.lastName,
+			password: hashedPassword,
+			first_name: body.first_name,
+			last_name: body.first_name,
 			city: body.city,
 			phone: body.phone
 		}
 	});
-	NextResponse.json({ user });
+	// @ts-expect-error request is not accepted by setCookie yet
+	setCookie("jwt", token, { request, NextResponse, maxAge: 60 * 6 * 24 });
+	return new NextResponse(JSON.stringify({ user, token }), { status: 200 });
 }

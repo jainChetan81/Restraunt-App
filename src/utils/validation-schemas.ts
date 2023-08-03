@@ -4,8 +4,8 @@ export const LoginSchema = z.object({
 	password: z.string().min(6).max(20)
 });
 export const SignupSchema = LoginSchema.extend({
-	firstName: z.string().min(2).max(20),
-	lastName: z.string().min(2).max(20),
+	first_name: z.string().min(2).max(20),
+	last_name: z.string().min(2).max(20),
 	phone: z.string().min(10).max(10),
 	city: z.string().min(2).max(20)
 });

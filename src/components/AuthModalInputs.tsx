@@ -26,13 +26,13 @@ export default function AuthModalInputs({
                             type="text"
                             className="border rounded p-2 py-3 w-[49%]"
                             placeholder="First Name"
-                            {...register("firstName")}
+                            {...register("first_name")}
                         />
                         <input
                             type="text"
                             className="border rounded p-2 py-3 w-[49%]"
                             placeholder="Last Name"
-                            {...register("lastName")}
+                            {...register("last_name")}
                         />
                     </div>
                 )
