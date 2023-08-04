@@ -1,21 +1,18 @@
 import { type SchemaType } from "@/utils/validation-schemas";
 import { deleteCookie } from "cookies-next";
 import { useContext } from "react";
-import { AuthenticationContext } from "../app/context/AuthContext";
+import { AuthenticationContext } from "@/context/authContext";
 import { signinMutation, signupMutation } from "@/server/mutation";
 
 const useAuth = () => {
     const { setAuthState } = useContext(AuthenticationContext);
 
     const signin = async (
-        {
-            email,
-            password,
-        }: SchemaType<true>,
+        inputs: SchemaType<true>,
         handleClose: () => void
     ) => {
         setAuthState({ data: null, error: null, loading: true, });
-        const { data, error } = await signinMutation({ email, password });
+        const { data, error } = await signinMutation({ email: inputs.email, password: inputs.password });
         if (error !== null) {
             setAuthState({ data, error, loading: false });
             return;

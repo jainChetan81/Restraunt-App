@@ -2,8 +2,12 @@
 import { Alert, CircularProgress } from '@mui/material';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import AuthModalInputs from './AuthModalInputs';
+import { AuthenticationContext } from '@/context/authContext';
+import useAuth from './hooks/useAuth';
+import { type SchemaType } from '@/utils/validation-schemas';
+import { isSignupInputs } from '@/context/constants';
 
 const style = {
     position: 'absolute' as const,
@@ -20,16 +24,21 @@ export default function AuthModal({ isSignin = false }: { isSignin?: boolean }) 
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
-    // const { signin, signup } = useAuth();
-    // const { loading, data, error } = useContext(AuthenticationContext);
+    const { signin, signup } = useAuth();
+    const { loading, data, error } = useContext(AuthenticationContext);
 
-    // const handleClick = () => {
-    // if (isSignin) {
-    //     signin({ email: inputs.email, password: inputs.password }, handleClose);
-    // } else {
-    //     signup(inputs, handleClose);
-    // }
-    // };
+
+
+    const handleClick = (inputs: SchemaType<typeof isSignin>) => {
+        if (isSignupInputs(inputs)) {
+            signup(inputs, handleClose);
+        }
+        else {
+            signin({ email: inputs.email, password: inputs.password }, handleClose);
+
+        }
+    };
+
 
     return (
         <div>
@@ -41,15 +50,15 @@ export default function AuthModal({ isSignin = false }: { isSignin?: boolean }) 
                 aria-describedby="modal-modal-description"
             >
                 <Box sx={style}>
-                    {false ? (
+                    {loading ? (
                         <div className="py-24 px-2 h-[600px] flex justify-center">
                             <CircularProgress />
                         </div>
                     ) : (
                         <div className="p-2 h-[600px]">
-                            {false ? (
+                            {error ? (
                                 <Alert severity="error" className="mb-4">
-                                    {/* {error} */}
+                                    {error}
                                 </Alert>
                             ) : null}
                             <div className="uppercase font-bold text-center pb-2 border-b mb-2">
@@ -66,6 +75,8 @@ export default function AuthModal({ isSignin = false }: { isSignin?: boolean }) 
                                 </h2>
                                 <AuthModalInputs
                                     isSignin={isSignin}
+                                    handleClick={handleClick}
+
                                 />
 
                             </div>

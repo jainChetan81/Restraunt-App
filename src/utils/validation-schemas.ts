@@ -9,4 +9,4 @@ export const SignupSchema = LoginSchema.extend({
 	phone: z.string().min(10).max(10),
 	city: z.string().min(2).max(20)
 });
-export type SchemaType<T extends boolean> = z.infer<T extends true ? typeof LoginSchema : typeof SignupSchema>;
+export type SchemaType<T = false> = T extends true ? z.infer<typeof LoginSchema> : z.infer<typeof SignupSchema>;
