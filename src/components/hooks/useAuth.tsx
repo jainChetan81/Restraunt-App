@@ -12,12 +12,12 @@ const useAuth = () => {
         handleClose: () => void
     ) => {
         setAuthState({ data: null, error: null, loading: true, });
-        const { data, error } = await signinMutation({ email: inputs.email, password: inputs.password });
+        const { data: resData, error } = await signinMutation({ email: inputs.email, password: inputs.password });
         if (error !== null) {
-            setAuthState({ data, error, loading: false });
+            setAuthState({ data: resData, error, loading: false });
             return;
         }
-        setAuthState({ data, error, loading: false });
+        setAuthState({ data: resData, error, loading: false });
         handleClose();
     };
     const signup = async (

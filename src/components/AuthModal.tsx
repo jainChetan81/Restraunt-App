@@ -25,7 +25,7 @@ export default function AuthModal({ isSignin = false }: { isSignin?: boolean }) 
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const { signin, signup } = useAuth();
-    const { loading, data, error } = useContext(AuthenticationContext);
+    const { loading, error } = useContext(AuthenticationContext);
 
 
 
@@ -35,23 +35,22 @@ export default function AuthModal({ isSignin = false }: { isSignin?: boolean }) 
         }
         else {
             signin({ email: inputs.email, password: inputs.password }, handleClose);
-
         }
     };
 
 
     return (
         <div>
-            <button onClick={handleOpen} className={`${isSignin ? "bg-blue-400 text-white border mr-3" : "border p-1 px-4 rounded"} p-1 px-4 rounded`}>{isSignin ? "Sign in" : "Sign up"}</button>
+            <button onClick={handleOpen} className={`${isSignin ? "bg-blue-400 text-white mr-3" : ""} border p-1 px-4 rounded`}>{isSignin ? "Sign in" : "Sign up"}</button>
             <Modal
                 open={open}
-                onClose={handleClose}
+                // onClose={handleClose}
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
                 <Box sx={style}>
                     {loading ? (
-                        <div className="py-24 px-2 h-[600px] flex justify-center">
+                        <div className="py-24 px-2 h-[600px] flex justify-center items-center">
                             <CircularProgress />
                         </div>
                     ) : (
@@ -73,12 +72,7 @@ export default function AuthModal({ isSignin = false }: { isSignin?: boolean }) 
                                         "Create Your OpenTable Account"
                                     }
                                 </h2>
-                                <AuthModalInputs
-                                    isSignin={isSignin}
-                                    handleClick={handleClick}
-
-                                />
-
+                                <AuthModalInputs isSignin={isSignin} handleClick={handleClick} />
                             </div>
                         </div>
                     )}

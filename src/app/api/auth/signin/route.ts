@@ -1,12 +1,13 @@
 import { env } from "@/env/server.mjs";
+import { generatePasswordHash } from "@/server/utils";
 import { LoginSchema, type SchemaType } from "@/utils/validation-schemas";
 import { PrismaClient } from "@prisma/client";
-import bcrypt from "bcrypt";
 import { setCookie } from "cookies-next";
 import * as jose from "jose";
 import { NextResponse } from "next/server";
 
 const prisma = new PrismaClient();
+
 export async function POST(request: Request) {
 	const body = (await request.json()) as SchemaType<false>;
 	const error = LoginSchema.safeParse(body);
@@ -25,7 +26,7 @@ export async function POST(request: Request) {
 		return new NextResponse(JSON.stringify({ error: "Email or password is invalid" }), { status: 401 });
 	}
 
-	const isMatch = await bcrypt.compare(body.password, user.password);
+	const isMatch = user.password === generatePasswordHash(body.password);
 
 	if (!isMatch) {
 		return new NextResponse(JSON.stringify({ error: "Email or password is invalid" }), { status: 401 });

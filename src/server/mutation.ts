@@ -1,7 +1,7 @@
 import { type SchemaType } from "@/utils/validation-schemas";
 import { type CookieValueTypes } from "cookies-next";
 
-type ReturnType<T = unknown> =
+type FetchReturnType<T = unknown> =
 	| {
 			data: null;
 			error: string;
@@ -10,7 +10,7 @@ type ReturnType<T = unknown> =
 			data: T;
 			error: null;
 	  };
-export const signinMutation = async (data: SchemaType<true>): Promise<ReturnType<SchemaType<false>>> => {
+export const signinMutation = async (data: SchemaType<true>): Promise<FetchReturnType<SchemaType>> => {
 	try {
 		const response = await fetch("http://localhost:3000/api/auth/signin", {
 			method: "POST",
@@ -27,7 +27,7 @@ export const signinMutation = async (data: SchemaType<true>): Promise<ReturnType
 			throw new Error("Network response was not ok");
 		}
 
-		const responseData = await response.json();
+		const responseData = (await response.json()) as SchemaType;
 		return { data: responseData, error: null };
 	} catch (error) {
 		// @ts-expect-error - error is not a Response
@@ -45,7 +45,7 @@ export const signinMutation = async (data: SchemaType<true>): Promise<ReturnType
 	}
 };
 
-export const signupMutation = async (data: SchemaType<false>): Promise<ReturnType<SchemaType<false>>> => {
+export const signupMutation = async (data: SchemaType<false>): Promise<FetchReturnType<SchemaType<false>>> => {
 	try {
 		const response = await fetch("/api/auth/signup", {
 			method: "POST",

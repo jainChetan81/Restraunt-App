@@ -12,12 +12,18 @@ interface State {
     error: string | null;
     data: SchemaType | null;
 }
-
-interface AuthState extends State {
-    setAuthState: React.Dispatch<React.SetStateAction<State>>;
+function useStoreData() {
+    const [authState, setAuthState] = useState<State>({
+        loading: false,
+        data: null,
+        error: null,
+    });
+    return { ...authState, setAuthState };
 }
 
-export const AuthenticationContext = createContext<AuthState>({
+type UseStoreData = ReturnType<typeof useStoreData>;
+
+export const AuthenticationContext = createContext<UseStoreData>({
     loading: false,
     error: null,
     data: null,
@@ -29,11 +35,7 @@ export default function AuthContext({
 }: {
     children: React.ReactNode;
 }) {
-    const [authState, setAuthState] = useState<State>({
-        loading: true,
-        data: null,
-        error: null,
-    });
+    const { setAuthState, ...authState } = useStoreData();
 
     const fetchUser = async () => {
         const jwt = getCookie("jwt");
@@ -53,12 +55,7 @@ export default function AuthContext({
     }, []);
 
     return (
-        <AuthenticationContext.Provider
-            value={{
-                ...authState,
-                setAuthState,
-            }}
-        >
+        <AuthenticationContext.Provider value={{ ...authState, setAuthState }}>
             {children}
         </AuthenticationContext.Provider>
     );

@@ -1,6 +1,6 @@
 import { LoginSchema, type SchemaType, SignupSchema } from '@/utils/validation-schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { FieldErrors, useForm } from 'react-hook-form';
+import { type FieldErrors, useForm } from 'react-hook-form';
 
 
 interface Props {
@@ -18,7 +18,6 @@ export default function AuthModalInputs({
         console.log("dsdsds", data)
         handleClick(data)
     }
-    console.log({ errors })
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
             {
@@ -48,6 +47,7 @@ export default function AuthModalInputs({
                     placeholder="Email"
                     {...register("email")}
                 />
+                <small className="text-red-500">{(errors)?.email?.message}</small>
             </div>
             {
                 isSignin ? null : (
@@ -58,12 +58,14 @@ export default function AuthModalInputs({
                             placeholder="Phone"
                             {...register("phone")}
                         />
+                        <small className="text-red-500">{(errors as FieldErrors<SchemaType>)?.phone?.message}</small>
                         <input
                             type="text"
                             className="border rounded p-2 py-3 w-[49%]"
                             placeholder="City"
                             {...register("city")}
                         />
+                        <small className="text-red-500">{(errors as FieldErrors<SchemaType>)?.city?.message}</small>
                     </div>
                 )
             }
@@ -74,8 +76,10 @@ export default function AuthModalInputs({
                     placeholder="Password"
                     {...register("password")}
                 />
+                <small className="text-red-500">{(errors)?.password?.message}</small>
             </div>
             <button
+                type='submit'
                 className="uppercase bg-red-600 w-full text-white p-3 rounded text-sm mb-5 disabled:bg-gray-400"
             >
                 {isSignin ? "Sign In" : "Create Account"}

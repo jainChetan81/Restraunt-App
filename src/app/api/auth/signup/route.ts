@@ -1,12 +1,13 @@
 import { env } from "@/env/server.mjs";
+import { generatePasswordHash } from "@/server/utils";
 import { SignupSchema, type SchemaType } from "@/utils/validation-schemas";
 import { PrismaClient } from "@prisma/client";
-import bcrypt from "bcrypt";
 import { setCookie } from "cookies-next";
 import * as jose from "jose";
 import { NextResponse } from "next/server";
 
 const prisma = new PrismaClient();
+
 export async function POST(request: Request) {
 	const body = (await request.json()) as SchemaType<false>;
 	const error = SignupSchema.safeParse(body);
@@ -20,10 +21,13 @@ export async function POST(request: Request) {
 	if (userWithEmail) {
 		return new NextResponse(JSON.stringify({ error: "Email already exists" }), { status: 401 });
 	}
-	const hashedPassword = await bcrypt.hash(body.password, 10);
+
+	const hashedPassword = generatePasswordHash(body.password);
+
 	const alg = "HS256";
 	const secret = new TextEncoder().encode(env.JWT_SECRET);
 	const token = await new jose.SignJWT({ email: body.email }).setProtectedHeader({ alg }).setExpirationTime("24h").sign(secret);
+
 	const user = await prisma.user.create({
 		data: {
 			email: body.email,
@@ -34,6 +38,7 @@ export async function POST(request: Request) {
 			phone: body.phone
 		}
 	});
+
 	// @ts-expect-error request is not accepted by setCookie yet
 	setCookie("jwt", token, { request, NextResponse, maxAge: 60 * 6 * 24 });
 	return new NextResponse(JSON.stringify({ user, token }), { status: 200 });

@@ -1,5 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server";
 import * as jose from "jose";
+import { env } from "@/env/server.mjs";
 export async function middleware(req: NextRequest) {
 	const bearerToken = req.headers.get("authorization") as string;
 
@@ -13,7 +14,7 @@ export async function middleware(req: NextRequest) {
 		return new NextResponse(JSON.stringify({ error: "Unauthorized request" }), { status: 401 });
 	}
 
-	const secret = new TextEncoder().encode(process.env.JWT_SECRET);
+	const secret = new TextEncoder().encode(env.JWT_SECRET);
 
 	try {
 		await jose.jwtVerify(token, secret);
