@@ -2,14 +2,14 @@ import { env } from "@/env/server.mjs";
 import { generatePasswordHash } from "@/server/utils";
 import { SignupSchema, type SchemaType } from "@/utils/validation-schemas";
 import { PrismaClient } from "@prisma/client";
-import { setCookie } from "cookies-next";
 import * as jose from "jose";
+import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
 const prisma = new PrismaClient();
 
-export async function POST(request: Request) {
-	const body = (await request.json()) as SchemaType<false>;
+export async function POST(req: Request) {
+	const body = (await req.json()) as SchemaType<false>;
 	const error = SignupSchema.safeParse(body);
 	if (!error.success) {
 		console.log(error);
@@ -39,7 +39,6 @@ export async function POST(request: Request) {
 		}
 	});
 
-	// @ts-expect-error request is not accepted by setCookie yet
-	setCookie("jwt", token, { request, NextResponse, maxAge: 60 * 6 * 24 });
+	cookies().set("jwt", token, { maxAge: 60 * 6 * 24, secure: true, httpOnly: true, sameSite: "strict" });
 	return new NextResponse(JSON.stringify({ user, token }), { status: 200 });
 }

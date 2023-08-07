@@ -2,14 +2,13 @@ import { env } from "@/env/server.mjs";
 import { generatePasswordHash } from "@/server/utils";
 import { LoginSchema, type SchemaType } from "@/utils/validation-schemas";
 import { PrismaClient } from "@prisma/client";
-import { setCookie } from "cookies-next";
 import * as jose from "jose";
 import { NextResponse } from "next/server";
+import { cookies } from "next/headers";
 
 const prisma = new PrismaClient();
-
-export async function POST(request: Request) {
-	const body = (await request.json()) as SchemaType<false>;
+export async function POST(req: Request) {
+	const body = (await req.json()) as SchemaType<false>;
 	const error = LoginSchema.safeParse(body);
 	if (!error.success) {
 		console.log(error);
@@ -38,8 +37,7 @@ export async function POST(request: Request) {
 
 	const token = await new jose.SignJWT({ email: user.email }).setProtectedHeader({ alg }).setExpirationTime("24h").sign(secret);
 
-	// @ts-expect-error request is not accepted by setCookie yet
-	setCookie("jwt", token, { request, NextResponse, maxAge: 60 * 6 * 24 });
+	cookies().set("jwt", token, { maxAge: 60 * 6 * 24, secure: true, httpOnly: true, sameSite: "strict" });
 	const userData = {
 		id: user.id,
 		first_name: user.first_name,

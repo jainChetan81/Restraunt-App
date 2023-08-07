@@ -44,7 +44,7 @@ export default function AuthModal({ isSignin = false }: { isSignin?: boolean }) 
             <button onClick={handleOpen} className={`${isSignin ? "bg-blue-400 text-white mr-3" : ""} border p-1 px-4 rounded`}>{isSignin ? "Sign in" : "Sign up"}</button>
             <Modal
                 open={open}
-                // onClose={handleClose}
+                onClose={handleClose}
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
