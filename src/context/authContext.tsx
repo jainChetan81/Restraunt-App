@@ -2,7 +2,6 @@
 
 import { fetchUserData } from "@/server/mutation";
 import { type SchemaType } from "@/utils/validation-schemas";
-import { getCookie } from "cookies-next";
 import React, { useState, createContext, useEffect } from "react";
 
 
@@ -38,10 +37,8 @@ export default function AuthContext({
     const { setAuthState, ...authState } = useStoreData();
 
     const fetchUser = async () => {
-        const jwt = getCookie("jwt");
-        if (!jwt) return
         setAuthState({ data: null, error: null, loading: true, });
-        const { data, error } = await fetchUserData(jwt);
+        const { data, error } = await fetchUserData();
         if (error !== null) {
             setAuthState({ data, error, loading: false });
             return;

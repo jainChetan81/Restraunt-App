@@ -1,8 +1,7 @@
-import { type SchemaType } from "@/utils/validation-schemas";
-import { deleteCookie } from "cookies-next";
-import { useContext } from "react";
 import { AuthenticationContext } from "@/context/authContext";
-import { signinMutation, signupMutation } from "@/server/mutation";
+import { signinMutation, signoutMutation, signupMutation } from "@/server/mutation";
+import { type SchemaType } from "@/utils/validation-schemas";
+import { useContext } from "react";
 
 const useAuth = () => {
     const { setAuthState } = useContext(AuthenticationContext);
@@ -35,9 +34,17 @@ const useAuth = () => {
 
     };
 
-    const signout = () => {
-        deleteCookie("jwt");
+    const signout = async () => {
+        setAuthState(e => ({
+            ...e,
+            loading: true,
+        }));
+        const { error } = await signoutMutation();
+        if (error !== null) {
+            setAuthState(e => ({ ...e, error, loading: false }));
+            return;
 
+        }
         setAuthState({
             data: null,
             error: null,

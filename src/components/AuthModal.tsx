@@ -20,7 +20,7 @@ const style = {
     p: 4,
 };
 
-export default function AuthModal({ isSignin = false }: { isSignin?: boolean }) {
+export default function AuthModal({ isSignin = false, }: { isSignin?: boolean, }) {
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -41,9 +41,10 @@ export default function AuthModal({ isSignin = false }: { isSignin?: boolean }) 
 
     return (
         <div>
-            <button onClick={handleOpen} className={`${isSignin ? "bg-blue-400 text-white mr-3" : ""} border p-1 px-4 rounded`}>{isSignin ? "Sign in" : "Sign up"}</button>
+            <button onClick={handleOpen} disabled={loading} className={`${isSignin ? "bg-blue-400 text-white mr-3" : ""} border p-1 px-4 rounded`}>{isSignin ? "Sign in" : "Sign up"}</button>
             <Modal
                 open={open}
+
                 onClose={handleClose}
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"

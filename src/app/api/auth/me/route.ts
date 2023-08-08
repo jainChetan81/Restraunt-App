@@ -1,16 +1,15 @@
 import jwt from "jsonwebtoken";
 import { PrismaClient } from "@prisma/client";
-import { NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 
 const prisma = new PrismaClient();
 
-export async function GET(req: Request) {
-	const bearerToken = req.headers.get("authorization") as string;
-	const token = bearerToken.split(" ")[1]!;
+export async function GET(req: NextRequest) {
+	const bearerToken = req.cookies.get("jwt")?.value;
 
-	const payload = jwt.decode(token) as { email: string };
+	const payload = bearerToken ? (jwt.decode(bearerToken) as { email: string }) : null;
 
-	if (!token || !payload || !payload.email) {
+	if (!bearerToken || !payload || !payload.email) {
 		return new NextResponse(
 			JSON.stringify({
 				error: "Unauthorized request"
