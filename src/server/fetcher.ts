@@ -37,7 +37,9 @@ export const getSingleRestaurant = async (slug: string) => {
 			slug: true,
 			description: true,
 			images: true,
-			Review: true
+			Review: true,
+			open_time: true,
+			close_time: true
 		}
 	});
 	if (!restaurant) throw new Error("Restaurant not found");

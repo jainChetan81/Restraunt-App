@@ -1,3 +1,4 @@
+"use client"
 import { AuthenticationContext } from "@/context/authContext";
 import { signinMutation, signoutMutation, signupMutation } from "@/server/mutation";
 import { type SchemaType } from "@/utils/validation-schemas";
