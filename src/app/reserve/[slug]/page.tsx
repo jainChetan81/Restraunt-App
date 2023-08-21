@@ -1,35 +1,40 @@
+import { getSingleRestaurant } from "@/server/fetcher";
+import Image from "next/image";
+import { format } from "date-fns";
+import { Time, convertToDisplayTime } from "@/utils";
+import Form from "./Form";
 
-const ReserveSlugPage = () => {
+const ReserveSlugPage = async ({
+	params,
+	searchParams,
+}: {
+	params: { slug: string };
+	searchParams: { date: string; partySize: string };
+}) => {
+	const restaurant = await getSingleRestaurant(params.slug)
+	const [day, time] = searchParams.date
 	return (
 		<div className="border-t h-screen">
 			<div className="py-9 w-3/5 m-auto">
-				<div>
-					<h3 className="font-bold">You&lsquo;re almost done!</h3>
-					<div className="mt-5 flex">
-						<img src="https://images.otstatic.com/prod1/49153814/2/medium.jpg" alt="" className="w-32 h-18 rounded" />
-						<div className="ml-4">
-							<h1 className="text-3xl font-bold">Aiāna Restaurant Collective</h1>
-							<div className="flex mt-3">
-								<p className="mr-6">Tues, 22, 2023</p>
-								<p className="mr-6">7:30 PM</p>
-								<p className="mr-6">3 people</p>
-							</div>
+				<h3 className="font-bold">You&lsquo;re almost done!</h3>
+				<div className="mt-5 flex">
+					<Image src={restaurant?.main_image ?? "https://images.otstatic.com/prod1/49153814/2/medium.jpg"} alt="" className="w-32 h-18 rounded" />
+					<div className="ml-4">
+						<h1 className="text-3xl font-bold">{restaurant.name}</h1>
+						<div className="flex mt-3">
+							<p className="mr-6">{format(new Date(searchParams.date), "ccc, LLL d")}</p>
+							<p className="mr-6">{convertToDisplayTime(time as Time)}</p>
+							<p className="mr-6">
+								{searchParams.partySize} {parseInt(searchParams.partySize) === 1 ? "person" : "people"}
+							</p>
 						</div>
 					</div>
 				</div>
-				<div className="mt-10 flex flex-wrap justify-between w-[660px]">
-					<input type="text" className="border rounded p-3 w-80 mb-4" placeholder="First name" />
-					<input type="text" className="border rounded p-3 w-80 mb-4" placeholder="Last name" />
-					<input type="text" className="border rounded p-3 w-80 mb-4" placeholder="Phone number" />
-					<input type="text" className="border rounded p-3 w-80 mb-4" placeholder="Email" />
-					<input type="text" className="border rounded p-3 w-80 mb-4" placeholder="Occasion (optional)" />
-					<input type="text" className="border rounded p-3 w-80 mb-4" placeholder="Requests (optional)" />
-					<button className="bg-red-600 w-full p-3 text-white font-bold rounded disabled:bg-gray-300">Complete reservation</button>
-					<p className="mt-4 text-sm">
-						By clicking “Complete reservation” you agree to the OpenTable Terms of Use and Privacy Policy. Standard text message rates
-						may apply. You may opt out of receiving text messages at any time.
-					</p>
-				</div>
+				<Form
+					partySize={searchParams.partySize}
+					slug={params.slug}
+					date={searchParams.date}
+				/>
 			</div>
 		</div>
 	);

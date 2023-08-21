@@ -166,3 +166,22 @@ export const fetchRestaurantByParams = async (city?: string, cuisine?: string, p
 	if (!restaurants) throw new Error("No Restaurants found");
 	return restaurants;
 };
+
+export const findRestaurantBookingBySlug = async (slug: string) => {
+	if (!slug) throw new Error("Invalid data provided");
+	const restaurant = await prisma.restaurant.findUnique({
+		where: {
+			slug
+		},
+		select: {
+			Booking: true,
+			open_time: true,
+			close_time: true,
+			Table: true
+		}
+	});
+	if (!restaurant) throw new Error("Restaurant not found");
+	return restaurant;
+};
+
+export type RestaurantBookings = Awaited<ReturnType<typeof findRestaurantBookingBySlug>>;

@@ -1,5 +1,8 @@
+import { timeIntervals } from "@/data";
 import { env } from "@/env/server.mjs";
+import { PrismaClient } from "@prisma/client";
 import { pbkdf2Sync } from "crypto";
+import type { RestaurantBookings } from "./fetcher";
 
 // Function to generate a password hash using Node.js crypto
 export function generatePasswordHash(password: string): string {
@@ -11,3 +14,60 @@ export function generatePasswordHash(password: string): string {
 	const hash = pbkdf2Sync(password, salt, iterations, keylen, digest);
 	return hash.toString("hex");
 }
+
+export const findAvailableTables = async ({ time, day, restaurant }: { time: string; day: string; restaurant: RestaurantBookings }) => {
+	const prisma = new PrismaClient();
+	const searchTimes = timeIntervals.find((t) => {
+		return t.time === time;
+	})?.searchTimes;
+
+	if (!searchTimes) {
+		return null;
+	}
+
+	const bookings = await prisma.booking.findMany({
+		where: {
+			booking_time: {
+				gte: new Date(`${day}T${searchTimes[0]}`),
+				lte: new Date(`${day}T${searchTimes[searchTimes.length - 1]}`)
+			}
+		},
+		select: {
+			number_of_people: true,
+			booking_time: true,
+			BookingsOnTables: true
+		}
+	});
+
+	const bookingTablesObj: Record<string, Record<string, number>> = {};
+
+	bookings.forEach((booking) => {
+		bookingTablesObj[booking.booking_time.toISOString()] = booking.BookingsOnTables.reduce((obj, table) => {
+			return {
+				...obj,
+				[table.table_id]: true
+			};
+		}, {});
+	});
+
+	const tables = restaurant.Table;
+
+	const searchTimesWithTables = searchTimes.map((searchTime) => {
+		return {
+			date: new Date(`${day}T${searchTime}`),
+			time: searchTime,
+			tables
+		};
+	});
+
+	searchTimesWithTables.forEach((t) => {
+		t.tables = t.tables.filter((table) => {
+			if (bookingTablesObj[t.date.toISOString()]) {
+				if (bookingTablesObj[t.date.toISOString()]?.[table.id]) return false;
+			}
+			return true;
+		});
+	});
+
+	return searchTimesWithTables;
+};

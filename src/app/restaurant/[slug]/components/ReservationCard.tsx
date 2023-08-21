@@ -1,12 +1,13 @@
 
 "use client"
-import { useState } from 'react'
-import DatePicker from 'react-datepicker'
-import { partySize as partySizes, timeIntervals } from '../../../../data'
+import { convertToDisplayTime, type Time } from '@/utils';
 import { CircularProgress } from "@mui/material";
 import Link from "next/link";
-import 'react-datepicker/dist/react-datepicker.css'
-import { type Time, convertToDisplayTime } from '@/utils';
+import { useState } from 'react';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import { partySize as partySizes, timeIntervals } from '../../../../data';
+import useAvailabilities from '@/components/hooks/useAvailability';
 const ReservationCard = ({
     openTime,
     closeTime,
@@ -16,26 +17,27 @@ const ReservationCard = ({
     closeTime: string;
     slug: string;
 }) => {
+    const { data, loading, error, fetchAvailabilities } = useAvailabilities();
     const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
     const [time, setTime] = useState(openTime);
     const [partySize, setPartySize] = useState("2");
-    const [day, setDay] = useState(new Date().toISOString().split("T")[0]);
+    const [day, setDay] = useState(new Date().toISOString().split("T")[0]!);
 
     const handleChangeDate = (date: Date | null) => {
         if (date) {
-            setDay(date.toISOString().split("T")[0]);
+            setDay(date.toISOString().split("T")[0]!);
             return setSelectedDate(date);
         }
         return setSelectedDate(null);
     };
 
     const handleClick = () => {
-        // fetchAvailabilities({
-        //     slug,
-        //     day,
-        //     time,
-        //     partySize,
-        // });
+        fetchAvailabilities({
+            slug,
+            day,
+            time,
+            partySize,
+        });
     };
 
     const filterTimeByRestaurantOpenWindow = () => {

@@ -32,7 +32,7 @@ const RestaurantCard = ({ restaurant }: { restaurant: RestaurantCard[number] }) 
 				<Image src={restaurant.main_image} alt="" className="w-full h-36" height={144} width={254} priority />
 				<div className="p-1">
 					<h3 className="font-bold text-2xl mb-2">{restaurant.name}</h3>
-					<div className="flex items-start">
+					<div className="flex items-center">
 						<Stars reviews={restaurant.Review} />
 						<div className="ml-2">{renderRatingText()}</div>
 					</div>
