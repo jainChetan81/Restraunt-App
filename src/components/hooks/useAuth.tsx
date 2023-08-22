@@ -1,6 +1,6 @@
 "use client"
 import { AuthenticationContext } from "@/context/authContext";
-import { signinMutation, signoutMutation, signupMutation } from "@/server/mutation";
+import { myAction, signinMutation, signupMutation } from "@/server/mutation";
 import { type SchemaType } from "@/utils/validation-schemas";
 import { useContext } from "react";
 
@@ -36,16 +36,12 @@ const useAuth = () => {
     };
 
     const signout = async () => {
+
         setAuthState(e => ({
             ...e,
             loading: true,
         }));
-        const { error } = await signoutMutation();
-        if (error !== null) {
-            setAuthState(e => ({ ...e, error, loading: false }));
-            return;
-
-        }
+        await myAction()
         setAuthState({
             data: null,
             error: null,

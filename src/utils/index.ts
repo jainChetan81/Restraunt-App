@@ -1,4 +1,6 @@
-import { type Review } from "@prisma/client";
+import { timeIntervals } from "@/data";
+import { type RestaurantTablesBySlug } from "@/server/fetcher";
+import { PrismaClient, type Review } from "@prisma/client";
 
 export const calculateReviewRatingAverage = (reviews: Pick<Review, "rating">[]) => {
 	if (!reviews.length) return 0;
@@ -73,4 +75,69 @@ export type Time = keyof typeof displayTimeObject;
 
 export const convertToDisplayTime = (time: Time) => {
 	return displayTimeObject[time];
+};
+
+export const findAvailabileTables = async ({
+	time,
+	day,
+	restaurant
+}: {
+	time: string;
+	day: string;
+	restaurant: RestaurantTablesBySlug;
+}) => {
+	const prisma = new PrismaClient();
+	const searchTimes = timeIntervals.find((t) => {
+		return t.time === time;
+	})?.searchTimes;
+
+	if (!searchTimes) {
+		return null;
+	}
+
+	const bookings = await prisma.booking.findMany({
+		where: {
+			booking_time: {
+				gte: new Date(`${day}T${searchTimes[0]}`),
+				lte: new Date(`${day}T${searchTimes[searchTimes.length - 1]}`)
+			}
+		},
+		select: {
+			number_of_people: true,
+			booking_time: true,
+			BookingsOnTables: true
+		}
+	});
+
+	const bookingTablesObj: { [key: string]: { [key: number]: true } } = {};
+
+	bookings.forEach((booking) => {
+		bookingTablesObj[booking.booking_time.toISOString()] = booking.BookingsOnTables.reduce((obj, table) => {
+			return {
+				...obj,
+				[table.table_id]: true
+			};
+		}, {});
+	});
+
+	const tables = restaurant.Table;
+
+	const searchTimesWithTables = searchTimes.map((searchTime) => {
+		return {
+			date: new Date(`${day}T${searchTime}`),
+			time: searchTime,
+			tables
+		};
+	});
+
+	searchTimesWithTables.forEach((t) => {
+		t.tables = t.tables.filter((table) => {
+			if (bookingTablesObj[t.date.toISOString()]) {
+				if (bookingTablesObj[t.date.toISOString()]?.[table.id]) return false;
+			}
+			return true;
+		});
+	});
+
+	return searchTimesWithTables;
 };

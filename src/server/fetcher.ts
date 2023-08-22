@@ -185,3 +185,22 @@ export const findRestaurantBookingBySlug = async (slug: string) => {
 };
 
 export type RestaurantBookings = Awaited<ReturnType<typeof findRestaurantBookingBySlug>>;
+
+export const findAvailableTablesBySlug = async (slug: string) => {
+	if (!slug) throw new Error("Invalid data provided");
+	const restaurant = await prisma.restaurant.findUnique({
+		where: {
+			slug
+		},
+		select: {
+			Table: true,
+			open_time: true,
+			close_time: true,
+			id: true
+		}
+	});
+	if (!restaurant) throw new Error("Invalid data provided");
+	return restaurant;
+};
+
+export type RestaurantTablesBySlug = Awaited<ReturnType<typeof findAvailableTablesBySlug>>;

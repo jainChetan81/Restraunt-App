@@ -1,7 +1,7 @@
 import { getSingleRestaurant } from "@/server/fetcher";
 import Image from "next/image";
 import { format } from "date-fns";
-import { Time, convertToDisplayTime } from "@/utils";
+import { type Time, convertToDisplayTime } from "@/utils";
 import Form from "./Form";
 
 const ReserveSlugPage = async ({
@@ -13,6 +13,7 @@ const ReserveSlugPage = async ({
 }) => {
 	const restaurant = await getSingleRestaurant(params.slug)
 	const [day, time] = searchParams.date
+	console.log({ day })
 	return (
 		<div className="border-t h-screen">
 			<div className="py-9 w-3/5 m-auto">
