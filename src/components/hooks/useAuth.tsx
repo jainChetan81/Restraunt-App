@@ -1,6 +1,7 @@
 "use client"
 import { AuthenticationContext } from "@/context/authContext";
-import { myAction, signinMutation, signupMutation } from "@/server/mutation";
+import { myAction } from "@/server/actions";
+import { signinMutation, signupMutation } from "@/server/mutation";
 import { type SchemaType } from "@/utils/validation-schemas";
 import { useContext } from "react";
 

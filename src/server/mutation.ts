@@ -1,4 +1,3 @@
-"use server";
 import { type SchemaType } from "@/utils/validation-schemas";
 
 type FetchReturnType<T = unknown> =
@@ -117,8 +116,3 @@ export const fetchUserData = async () => {
 		return { data: null, error: errorMessage };
 	}
 };
-
-export async function myAction() {
-	const { cookies } = await require("next/headers");
-	cookies().delete("jwt");
-}

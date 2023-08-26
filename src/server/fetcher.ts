@@ -1,6 +1,6 @@
 import { type PRICE, PrismaClient } from "@prisma/client";
-const prisma = new PrismaClient();
 export const getRestaurants = async () => {
+	const prisma = new PrismaClient();
 	const restaurants = await prisma.restaurant.findMany({
 		select: {
 			id: true,
@@ -23,6 +23,7 @@ export const getRestaurants = async () => {
 export type RestaurantCard = Awaited<ReturnType<typeof getRestaurants>>;
 
 export const getSingleRestaurant = async (slug: string) => {
+	const prisma = new PrismaClient();
 	const restaurant = await prisma.restaurant.findUnique({
 		where: {
 			slug
@@ -48,6 +49,7 @@ export const getSingleRestaurant = async (slug: string) => {
 export type SingleRestaurant = Awaited<ReturnType<typeof getSingleRestaurant>>;
 
 export const fetchRestaurantItems = async (slug: string) => {
+	const prisma = new PrismaClient();
 	const restaurant = await prisma.restaurant.findUnique({
 		where: {
 			slug
@@ -65,6 +67,7 @@ export type RestaurantItems = Awaited<ReturnType<typeof fetchRestaurantItems>>;
 
 export const fetchRestaurantByLocation = async (city: string) => {
 	if (!city) return await getRestaurants();
+	const prisma = new PrismaClient();
 	const restaurants = await prisma.restaurant.findMany({
 		where: {
 			Location: {
@@ -94,6 +97,7 @@ export const fetchRestaurantByLocation = async (city: string) => {
 export type RestaurantByLocation = Awaited<ReturnType<typeof fetchRestaurantByLocation>>;
 
 export const fetchAllLocations = async () => {
+	const prisma = new PrismaClient();
 	const locations = await prisma.location.findMany({
 		select: {
 			name: true
@@ -105,6 +109,7 @@ export const fetchAllLocations = async () => {
 export type AllLocations = Awaited<ReturnType<typeof fetchAllLocations>>;
 
 export const fetchAllCuisines = async () => {
+	const prisma = new PrismaClient();
 	const cuisines = await prisma.cuisine.findMany({
 		select: {
 			name: true
@@ -143,7 +148,7 @@ export const fetchRestaurantByParams = async (city?: string, cuisine?: string, p
 			equals: price
 		};
 	}
-	console.log({ whereClause });
+	const prisma = new PrismaClient();
 
 	const restaurants = await prisma.restaurant.findMany({
 		where: whereClause,
@@ -169,6 +174,7 @@ export const fetchRestaurantByParams = async (city?: string, cuisine?: string, p
 
 export const findRestaurantBookingBySlug = async (slug: string) => {
 	if (!slug) throw new Error("Invalid data provided");
+	const prisma = new PrismaClient();
 	const restaurant = await prisma.restaurant.findUnique({
 		where: {
 			slug
@@ -188,6 +194,7 @@ export type RestaurantBookings = Awaited<ReturnType<typeof findRestaurantBooking
 
 export const findAvailableTablesBySlug = async (slug: string) => {
 	if (!slug) throw new Error("Invalid data provided");
+	const prisma = new PrismaClient();
 	const restaurant = await prisma.restaurant.findUnique({
 		where: {
 			slug
