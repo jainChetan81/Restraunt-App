@@ -46,7 +46,7 @@ export default function Form({
     };
 
     const handleClick = async () => {
-        const booking = await createReservation({
+        await createReservation({
             slug,
             partySize,
             time,
@@ -87,7 +87,9 @@ export default function Form({
                         onChange={handleChangeInput}
                     />
                     <input
-                        type="text"
+                        type="tel"
+                        minLength={10}
+                        maxLength={10}
                         className="border rounded p-3 w-80 mb-4"
                         value={inputs.bookerPhone}
                         placeholder="Phone number"

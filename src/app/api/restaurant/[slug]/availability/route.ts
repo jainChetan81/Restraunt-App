@@ -1,14 +1,14 @@
 import { findRestaurantBookingBySlug } from "@/server/fetcher";
 import { findAvailableTables } from "@/server/utils";
-import { NextResponse, type NextRequest } from "next/server";
+import { NextResponse } from "next/server";
 
-export async function GET(req: NextRequest) {
+export async function POST(req: Request, context: { params: { slug: string } }) {
 	const url = new URL(req.url);
 
-	const slug = url.searchParams.get("slug");
 	const day = url.searchParams.get("day");
 	const time = url.searchParams.get("time");
 	const partySize = url.searchParams.get("partySize");
+	const slug = context?.params?.slug;
 
 	if (!slug || !day || !time || !partySize) {
 		return new NextResponse(JSON.stringify({ errorMessage: "Invalid data provided" }), { status: 400 });

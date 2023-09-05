@@ -1,12 +1,11 @@
+import prisma from "@/db/prisma";
 import { env } from "@/env/server.mjs";
 import { generatePasswordHash } from "@/server/utils";
 import { LoginSchema, type SchemaType } from "@/utils/validation-schemas";
-import { PrismaClient } from "@prisma/client";
 import * as jose from "jose";
-import { type NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
+import { NextResponse, type NextRequest } from "next/server";
 
-const prisma = new PrismaClient();
 export async function POST(req: NextRequest) {
 	const body = (await req.json()) as SchemaType<false>;
 	const error = LoginSchema.safeParse(body);

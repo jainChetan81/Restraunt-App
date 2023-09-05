@@ -1,6 +1,7 @@
 import { timeIntervals } from "@/data";
+import prisma from "@/db/prisma";
 import { type RestaurantTablesBySlug } from "@/server/fetcher";
-import { PrismaClient, type Review } from "@prisma/client";
+import { type Review } from "@prisma/client";
 
 export const calculateReviewRatingAverage = (reviews: Pick<Review, "rating">[]) => {
 	if (!reviews.length) return 0;
@@ -77,16 +78,7 @@ export const convertToDisplayTime = (time: Time) => {
 	return displayTimeObject[time];
 };
 
-export const findAvailabileTables = async ({
-	time,
-	day,
-	restaurant
-}: {
-	time: string;
-	day: string;
-	restaurant: RestaurantTablesBySlug;
-}) => {
-	const prisma = new PrismaClient();
+export const findAvailableTables = async ({ time, day, restaurant }: { time: string; day: string; restaurant: RestaurantTablesBySlug }) => {
 	const searchTimes = timeIntervals.find((t) => {
 		return t.time === time;
 	})?.searchTimes;

@@ -22,7 +22,7 @@ const ReservationCard = ({
     const [time, setTime] = useState(openTime);
     const [partySize, setPartySize] = useState("2");
     const [day, setDay] = useState(new Date().toISOString().split("T")[0]!);
-
+    console.error({ error })
     const handleChangeDate = (date: Date | null) => {
         if (date) {
             setDay(date.toISOString().split("T")[0]!);
@@ -60,7 +60,7 @@ const ReservationCard = ({
         return timesWithinWindow as typeof timeIntervals
     };
     return (
-        <div className="fixed  bg-white rounded p-3 shadow ml-auto">
+        <div className="bg-white rounded p-3 shadow ml-auto">
             <div className="text-center border-b pb-2 font-bold">
                 <h4 className="mr-7 text-lg">Make a Reservation</h4>
             </div>
@@ -110,30 +110,30 @@ const ReservationCard = ({
                     onClick={handleClick}
                     disabled={false}
                 >
-                    {false ? <CircularProgress color="inherit" /> : "Find a Time"}
+                    {loading ? <CircularProgress color="inherit" /> : "Find a Time"}
                 </button>
             </div>
-            {/* {data && data.length ? ( */}
-            <div className="mt-4">
-                <p className="text-reg">Select a Time</p>
-                <div className="flex flex-wrap mt-2">
-                    {/* {data.map((time) => {
-                        return time.available ? ( */}
-                    <Link
-                        href={`/reserve/${slug}?date=${day}T${time}&partySize=${partySize}`}
-                        className="bg-red-600 cursor-pointer p-2 w-24 text-center text-white mb-3 rounded mr-3"
-                    >
-                        <p className="text-sm font-bold">
-                            {convertToDisplayTime(time as Time)}
-                        </p>
-                    </Link>
-                    {/* ) : (
-                            <p className="bg-gray-300 p-2 w-24 mb-3 rounded mr-3"></p>
-                        );
-                    })} */}
+            {data && data.length ? (
+                <div className="mt-4">
+                    <p className="text-reg">Select a Time</p>
+                    <div className="flex flex-wrap mt-2">
+                        {data.map((item) => {
+                            return item.available ? (
+                                <Link
+                                    href={`/reserve/${slug}?date=${day}T${item.time}&partySize=${partySize}`}
+                                    className="bg-red-600 cursor-pointer p-2 w-24 text-center text-white mb-3 rounded mr-3"
+                                >
+                                    <p className="text-sm font-bold">
+                                        {convertToDisplayTime(item.time as Time)}
+                                    </p>
+                                </Link>
+                            ) : (
+                                <p className="bg-gray-300 p-2 w-24 mb-3 rounded mr-3"></p>
+                            );
+                        })}
+                    </div>
                 </div>
-            </div>
-            {/* ) : null} */}
+            ) : null}
         </div>
     );
 }

@@ -1,14 +1,11 @@
+import prisma from "@/db/prisma";
 import { findAvailableTablesBySlug } from "@/server/fetcher";
-import { findAvailabileTables } from "@/utils";
-import { PrismaClient } from "@prisma/client";
-import { NextResponse, type NextRequest } from "next/server";
+import { findAvailableTables } from "@/utils";
+import { NextResponse } from "next/server";
 
-const prisma = new PrismaClient();
-
-export default async function POST(req: NextRequest) {
+export async function POST(req: Request, context: { params: { slug: string } }) {
 	const url = new URL(req.url);
-
-	const slug = url.searchParams.get("slug");
+	const slug = context?.params?.slug;
 	const day = url.searchParams.get("day");
 	const time = url.searchParams.get("time");
 	const partySize = url.searchParams.get("partySize");
@@ -31,14 +28,14 @@ export default async function POST(req: NextRequest) {
 		return new NextResponse(JSON.stringify({ errorMessage: "Restaurant is not open at that time" }), { status: 400 });
 	}
 
-	const searchTimesWithTables = await findAvailabileTables({
+	const searchTimesWithTables = await findAvailableTables({
 		day,
 		time,
 		restaurant
 	});
 
 	if (!searchTimesWithTables) {
-		return new NextResponse(JSON.stringify({ errorMessage: "No availablity, cannot book" }), { status: 400 });
+		return new NextResponse(JSON.stringify({ errorMessage: "No availability, cannot book" }), { status: 400 });
 	}
 
 	const searchTimeWithTables = searchTimesWithTables.find((t) => {
@@ -46,13 +43,10 @@ export default async function POST(req: NextRequest) {
 	});
 
 	if (!searchTimeWithTables) {
-		return new NextResponse(JSON.stringify({ errorMessage: "No availablity, cannot book" }), { status: 400 });
+		return new NextResponse(JSON.stringify({ errorMessage: "No availability, cannot book" }), { status: 400 });
 	}
 
-	const tablesCount: {
-		2: number[];
-		4: number[];
-	} = {
+	const tablesCount: Record<2 | 4, number[]> = {
 		2: [],
 		4: []
 	};

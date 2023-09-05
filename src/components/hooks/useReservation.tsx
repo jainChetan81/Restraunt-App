@@ -29,28 +29,25 @@ export default function useReservation() {
         setDidBook: Dispatch<SetStateAction<boolean>>;
     }) => {
         setLoading(true);
-
-        // const url = new URL(`http://localhost:3000/api/restaurant/${slug}/reserve`);
-
-        const url = new URL(`/api/restaurant/${slug}/reserve`);
-        url.searchParams.append("day", day);
-        url.searchParams.append("time", time);
-        url.searchParams.append("partySize", partySize);
-
         try {
-            const response = await fetch(url.toString(), {
-                method: "POST",
+            const url = `http://localhost:3000/api/restaurant/${slug}/reserve`;
+            const body = {
+                bookerFirstName,
+                bookerLastName,
+                bookerPhone,
+                bookerEmail,
+                bookerOccasion,
+                bookerRequest,
+            };
+
+            const fullURL = `${url}?partySize=${partySize}&day=${day}&time=${time}`;
+
+            const response = await fetch(fullURL, {
+                method: 'POST',
                 headers: {
-                    "Content-Type": "application/json"
+                    'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({
-                    bookerFirstName,
-                    bookerLastName,
-                    bookerPhone,
-                    bookerEmail,
-                    bookerOccasion,
-                    bookerRequest
-                })
+                body: JSON.stringify(body),
             });
 
             if (!response.ok) {
@@ -58,11 +55,12 @@ export default function useReservation() {
                 throw new Error(responseData.errorMessage);
             }
 
-            const data = await response.json();
+            const responseData = await response.json();
+
 
             setLoading(false);
             setDidBook(true);
-            return data;
+            return responseData;
         } catch (error) {
             setLoading(false);
         }

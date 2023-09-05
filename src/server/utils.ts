@@ -1,6 +1,6 @@
 import { timeIntervals } from "@/data";
+import prisma from "@/db/prisma";
 import { env } from "@/env/server.mjs";
-import { PrismaClient } from "@prisma/client";
 import { pbkdf2Sync } from "crypto";
 import type { RestaurantBookings } from "./fetcher";
 
@@ -16,7 +16,6 @@ export function generatePasswordHash(password: string): string {
 }
 
 export const findAvailableTables = async ({ time, day, restaurant }: { time: string; day: string; restaurant: RestaurantBookings }) => {
-	const prisma = new PrismaClient();
 	const searchTimes = timeIntervals.find((t) => {
 		return t.time === time;
 	})?.searchTimes;

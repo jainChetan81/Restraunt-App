@@ -13,13 +13,13 @@ const ReserveSlugPage = async ({
 }) => {
 	const restaurant = await getSingleRestaurant(params.slug)
 	const [day, time] = searchParams.date
-	console.log({ day })
+	console.log({ day })	
 	return (
 		<div className="border-t h-screen">
 			<div className="py-9 w-3/5 m-auto">
 				<h3 className="font-bold">You&lsquo;re almost done!</h3>
 				<div className="mt-5 flex">
-					<Image src={restaurant?.main_image ?? "https://images.otstatic.com/prod1/49153814/2/medium.jpg"} alt="" className="w-32 h-18 rounded" />
+					<Image src={restaurant?.main_image ?? "https://images.otstatic.com/prod1/49153814/2/medium.jpg"} alt="" width={128} height={128} className="w-32 h-18 rounded" />
 					<div className="ml-4">
 						<h1 className="text-3xl font-bold">{restaurant.name}</h1>
 						<div className="flex mt-3">
