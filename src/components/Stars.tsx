@@ -1,10 +1,9 @@
-import errorStar from '../icons/error.png'
+import { calculateReviewRatingAverage } from '@/utils'
+import { type Review } from '@prisma/client'
+import Image from 'next/image'
+import emptyStar from '../icons/empty-star.png'
 import fullStar from '../icons/full-star.png'
 import halfStar from '../icons/half-star.png'
-import emptyStar from '../icons/empty-star.png'
-import Image from 'next/image'
-import { type Review } from '@prisma/client'
-import { calculateReviewRatingAverage } from '@/utils'
 
 const Stars = ({ reviews }: { reviews: Pick<Review, "rating">[] }) => {
     const rating = calculateReviewRatingAverage(reviews)

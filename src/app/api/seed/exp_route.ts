@@ -4,15 +4,13 @@ import { PRICE } from "@prisma/client";
 import { NextResponse } from "next/server";
 
 export async function GET() {
-	Promise.allSettled([
-		prisma.table.deleteMany(),
-		prisma.review.deleteMany(),
-		prisma.items.deleteMany(),
-		prisma.restaurant.deleteMany(),
-		prisma.location.deleteMany(),
-		prisma.cuisine.deleteMany(),
-		prisma.user.deleteMany()
-	]);
+	await prisma.table.deleteMany();
+	await prisma.review.deleteMany();
+	await prisma.items.deleteMany();
+	await prisma.restaurant.deleteMany();
+	await prisma.location.deleteMany();
+	await prisma.cuisine.deleteMany();
+	await prisma.user.deleteMany();
 
 	await prisma.location.createMany({
 		data: [{ name: "ottawa" }, { name: "toronto" }, { name: "niagara" }]
