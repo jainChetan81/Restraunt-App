@@ -13,7 +13,7 @@ const ReserveSlugPage = async ({
 }) => {
 	const restaurant = await getSingleRestaurant(params.slug)
 	const [day, time] = searchParams.date
-	console.log({ day })	
+	console.log({ day })
 	return (
 		<div className="border-t h-screen">
 			<div className="py-9 w-3/5 m-auto">

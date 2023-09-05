@@ -10,10 +10,15 @@ export default function useAvailabilities() {
         setLoading(true)
 
         try {
-            const url = new URL(`/api/restaurant/${slug}/availability`);
+            const url = `/api/restaurant/${slug}/availability`;
             const fullURL = `${url}?partySize=${partySize}&day=${day}&time=${time}`;
 
-            const response = await fetch(fullURL);
+            const response = await fetch(fullURL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
 
             // Check if the response status is okay
             if (!response.ok) {
