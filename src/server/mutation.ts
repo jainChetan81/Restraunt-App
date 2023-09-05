@@ -11,7 +11,7 @@ type FetchReturnType<T = unknown> =
 	  };
 export const signinMutation = async (data: SchemaType<true>): Promise<FetchReturnType<SchemaType>> => {
 	try {
-		const response = await fetch("http://localhost:3000/api/auth/signin", {
+		const response = await fetch("/api/auth/signin", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json"
@@ -84,7 +84,7 @@ export const signupMutation = async (data: SchemaType<false>): Promise<FetchRetu
 
 export const fetchUserData = async () => {
 	try {
-		const response = await fetch("http://localhost:3000/api/auth/me", {
+		const response = await fetch("/api/auth/me", {
 			method: "GET",
 			headers: {
 				"Content-Type": "application/json"

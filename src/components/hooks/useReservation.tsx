@@ -30,7 +30,7 @@ export default function useReservation() {
     }) => {
         setLoading(true);
         try {
-            const url = `http://localhost:3000/api/restaurant/${slug}/reserve`;
+            const url = `/api/restaurant/${slug}/reserve`;
             const body = {
                 bookerFirstName,
                 bookerLastName,

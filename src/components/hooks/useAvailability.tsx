@@ -10,14 +10,10 @@ export default function useAvailabilities() {
         setLoading(true)
 
         try {
-            const url = new URL(`http://localhost:3000/api/restaurant/${slug}/availability`);
-            url.search = new URLSearchParams({
-                day,
-                time,
-                partySize
-            }).toString();
+            const url = new URL(`/api/restaurant/${slug}/availability`);
+            const fullURL = `${url}?partySize=${partySize}&day=${day}&time=${time}`;
 
-            const response = await fetch(url.toString());
+            const response = await fetch(fullURL);
 
             // Check if the response status is okay
             if (!response.ok) {
