@@ -20,7 +20,7 @@ const LayoutRestaurant = ({ children, params }: { children: ReactNode, params: {
                 </div>
             </div>
             <div className="flex m-auto w-2/3 justify-between items-start 0 -mt-11">
-                <div className="bg-white w-[70%] rounded p-3 shadow">
+                <div>
                     <RestaurantNavbar slug={params.slug} />
                     {children}
                 </div>

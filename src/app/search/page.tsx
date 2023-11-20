@@ -7,7 +7,6 @@ const SearchPage = async ({ searchParams }: { searchParams: { city: string, cuis
 	const restaurants = await fetchRestaurantByParams(searchParams.city, searchParams.cuisine, searchParams.price);
 	return (
 		<div className="flex m-auto py-4 w-2/3 justify-between items-start">
-			{/* @ts-expect-error Typescript issue */}
 			<SearchSidebar searchParams={searchParams} />
 			<div className="w-5/6" >
 				{restaurants?.length ? restaurants.map((restaurant) => (

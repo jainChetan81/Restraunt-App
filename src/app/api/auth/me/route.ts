@@ -1,8 +1,6 @@
+import prisma from "@/db/prisma";
 import jwt from "jsonwebtoken";
-import { PrismaClient } from "@prisma/client";
-import { type NextRequest, NextResponse } from "next/server";
-
-const prisma = new PrismaClient();
+import { NextResponse, type NextRequest } from "next/server";
 
 export async function GET(req: NextRequest) {
 	const bearerToken = req.cookies.get("jwt")?.value;

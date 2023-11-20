@@ -1,5 +1,5 @@
-import { type PRICE, PrismaClient } from "@prisma/client";
-const prisma = new PrismaClient();
+import prisma from "@/db/prisma";
+import { type PRICE } from "@prisma/client";
 export const getRestaurants = async () => {
 	const restaurants = await prisma.restaurant.findMany({
 		select: {
@@ -37,7 +37,9 @@ export const getSingleRestaurant = async (slug: string) => {
 			slug: true,
 			description: true,
 			images: true,
-			Review: true
+			Review: true,
+			open_time: true,
+			close_time: true
 		}
 	});
 	if (!restaurant) throw new Error("Restaurant not found");
@@ -141,7 +143,6 @@ export const fetchRestaurantByParams = async (city?: string, cuisine?: string, p
 			equals: price
 		};
 	}
-	console.log({ whereClause });
 
 	const restaurants = await prisma.restaurant.findMany({
 		where: whereClause,
@@ -164,3 +165,41 @@ export const fetchRestaurantByParams = async (city?: string, cuisine?: string, p
 	if (!restaurants) throw new Error("No Restaurants found");
 	return restaurants;
 };
+
+export const findRestaurantBookingBySlug = async (slug: string) => {
+	if (!slug) throw new Error("Invalid data provided");
+	const restaurant = await prisma.restaurant.findUnique({
+		where: {
+			slug
+		},
+		select: {
+			Booking: true,
+			open_time: true,
+			close_time: true,
+			Table: true
+		}
+	});
+	if (!restaurant) throw new Error("Restaurant not found");
+	return restaurant;
+};
+
+export type RestaurantBookings = Awaited<ReturnType<typeof findRestaurantBookingBySlug>>;
+
+export const findAvailableTablesBySlug = async (slug: string) => {
+	if (!slug) throw new Error("Invalid data provided");
+	const restaurant = await prisma.restaurant.findUnique({
+		where: {
+			slug
+		},
+		select: {
+			Table: true,
+			open_time: true,
+			close_time: true,
+			id: true
+		}
+	});
+	if (!restaurant) throw new Error("Invalid data provided");
+	return restaurant;
+};
+
+export type RestaurantTablesBySlug = Awaited<ReturnType<typeof findAvailableTablesBySlug>>;

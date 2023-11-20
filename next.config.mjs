@@ -5,12 +5,11 @@
  */
 !process.env.SKIP_ENV_VALIDATION && (await import("./src/env/server.mjs"));
 /** @type {import("next").NextConfig} */
-import path from "path";
-import { fileURLToPath } from "url";
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 const configuration = {
+	experimental: {
+		serverActions: true
+	},
 	// i18n: {
 	// 	locales: ["en"],
 	// 	defaultLocale: "en"
@@ -18,7 +17,7 @@ const configuration = {
 	reactStrictMode: true,
 	// sassOptions: { includePaths: [path.join(__dirname, "styles")] },
 	images: {
-		domains: ["res.imagekit.io", "ik.imagekit.io", "rickandmortyapi.com", "i.giphy.com","resizer.otstatic.com"],
+		domains: ["res.imagekit.io", "ik.imagekit.io", "rickandmortyapi.com", "i.giphy.com", "resizer.otstatic.com"],
 		minimumCacheTTL: 3600
 	},
 	/**

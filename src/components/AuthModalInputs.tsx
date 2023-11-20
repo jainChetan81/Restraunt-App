@@ -15,7 +15,6 @@ export default function AuthModalInputs({
         resolver: zodResolver(isSignin ? LoginSchema : SignupSchema),
     })
     const onSubmit = (data: SchemaType<typeof isSignin>) => {
-        console.log("dsdsds", data)
         handleClick(data)
     }
     return (
@@ -53,8 +52,10 @@ export default function AuthModalInputs({
                 isSignin ? null : (
                     <div className="my-3 flex justify-between text-sm">
                         <input
-                            type="text"
+                            type="tel"
                             className="border rounded p-2 py-3 w-[49%]"
+                            minLength={10}
+                            maxLength={10}
                             placeholder="Phone"
                             {...register("phone")}
                         />

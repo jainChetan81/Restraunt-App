@@ -11,7 +11,7 @@ type FetchReturnType<T = unknown> =
 	  };
 export const signinMutation = async (data: SchemaType<true>): Promise<FetchReturnType<SchemaType>> => {
 	try {
-		const response = await fetch("http://localhost:3000/api/auth/signin", {
+		const response = await fetch("/api/auth/signin", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json"
@@ -84,7 +84,7 @@ export const signupMutation = async (data: SchemaType<false>): Promise<FetchRetu
 
 export const fetchUserData = async () => {
 	try {
-		const response = await fetch("http://localhost:3000/api/auth/me", {
+		const response = await fetch("/api/auth/me", {
 			method: "GET",
 			headers: {
 				"Content-Type": "application/json"
@@ -114,34 +114,5 @@ export const fetchUserData = async () => {
 			errorMessage = errorData.errorMessage;
 		}
 		return { data: null, error: errorMessage };
-	}
-};
-
-export const signoutMutation = async () => {
-	try {
-		const response = await fetch("http://localhost:3000/api/auth/signout", {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json"
-			}
-		});
-
-		if (!response.ok) {
-			throw new Error("Network response was not ok");
-		}
-
-		return { error: null };
-	} catch (error) {
-		// @ts-expect-error - error is not a Response
-		let errorMessage = error?.message ?? ""; // default to thrown error message
-
-		if (error instanceof TypeError) {
-			errorMessage = "There was an error with the request.";
-		} else if (error instanceof Response) {
-			// If you have specific error messages sent from your backend, you can extract it like:
-			const errorData = await error.json();
-			errorMessage = errorData.errorMessage;
-		}
-		return { error: errorMessage };
 	}
 };
