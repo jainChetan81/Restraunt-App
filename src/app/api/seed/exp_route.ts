@@ -3,6 +3,7 @@ import prisma from "@/db/prisma";
 import { PRICE } from "@prisma/client";
 import { NextResponse } from "next/server";
 
+export const dynamic = "force-dynamic";
 export async function GET() {
 	await prisma.table.deleteMany();
 	await prisma.review.deleteMany();
@@ -272,8 +273,7 @@ export async function GET() {
 				name: "Casa Madera",
 				main_image: "https://resizer.otstatic.com/v2/photos/wide-huge/3/47744844.jpg",
 				price: PRICE.EXPENSIVE,
-				description:
-					"The first location in Canada, from famed restauranteurs Noble 33, welcomes patrons into an immersive dining experience.",
+				description: "The first location in Canada, from famed restauranteurs Noble 33, welcomes patrons into an immersive dining experience.",
 				images: [
 					"https://resizer.otstatic.com/v2/photos/xlarge/2/47745080.jpg",
 					"https://resizer.otstatic.com/v2/photos/xlarge/2/47745081.jpg",
@@ -1024,7 +1024,8 @@ export async function GET() {
 			{
 				first_name: "Laith",
 				last_name: "Harb",
-				text: "As always, food was excellent. Waitress was friendly and prompt. We had just one problem in that our dessert order went rogue in the system and we waited ages for it to arrive.",
+				text:
+					"As always, food was excellent. Waitress was friendly and prompt. We had just one problem in that our dessert order went rogue in the system and we waited ages for it to arrive.",
 				rating: 5,
 				restaurant_id: kamasutraIndianId,
 				user_id: userLaith.id
@@ -1104,7 +1105,8 @@ export async function GET() {
 			{
 				first_name: "LeBron",
 				last_name: "James",
-				text: "This visit was with a friend who had never been here before. She loved it as much as I do. She said it will be our new go to place!",
+				text:
+					"This visit was with a friend who had never been here before. She loved it as much as I do. She said it will be our new go to place!",
 				rating: 4,
 				restaurant_id: curryishTavernId,
 				user_id: userLebron.id
@@ -1112,7 +1114,8 @@ export async function GET() {
 			{
 				first_name: "LeBron",
 				last_name: "James",
-				text: "Had a full 3 course meal in the mid afternoon and every aspect of it was great. Server was named Brittany I believe and she was simply excellent.",
+				text:
+					"Had a full 3 course meal in the mid afternoon and every aspect of it was great. Server was named Brittany I believe and she was simply excellent.",
 				rating: 5,
 				restaurant_id: pukkaId,
 				user_id: userLebron.id
@@ -1160,7 +1163,8 @@ export async function GET() {
 			{
 				first_name: "Cassidy",
 				last_name: "Mancher",
-				text: "It was really great! Just temperature wise it was really chilly. A little mixup at the end with desserts also but overall we really enjoyed the evening",
+				text:
+					"It was really great! Just temperature wise it was really chilly. A little mixup at the end with desserts also but overall we really enjoyed the evening",
 				rating: 4,
 				restaurant_id: bluRistoranteId,
 				user_id: userCassidy.id
@@ -1168,7 +1172,8 @@ export async function GET() {
 			{
 				first_name: "Cassidy",
 				last_name: "Mancher",
-				text: "Food was served cold. Major No No. Fantastic Dessert. Service was good. Heavy Rock music should be toned down. Price vs Quality… not great.",
+				text:
+					"Food was served cold. Major No No. Fantastic Dessert. Service was good. Heavy Rock music should be toned down. Price vs Quality… not great.",
 				rating: 3,
 				restaurant_id: laBartolaId,
 				user_id: userCassidy.id

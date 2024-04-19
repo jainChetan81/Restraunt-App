@@ -2,6 +2,7 @@ import Header from "@/components/Header";
 import RestaurantCard from "@/components/RestaurantCard";
 import { getRestaurants } from "@/server/fetcher";
 
+export const dynamic = 'force-dynamic'
 
 export default async function Home() {
 	const restaurants = await getRestaurants();

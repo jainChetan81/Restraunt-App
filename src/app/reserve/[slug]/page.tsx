@@ -3,6 +3,7 @@ import Image from "next/image";
 import { format } from "date-fns";
 import { type Time, convertToDisplayTime } from "@/utils";
 import Form from "./Form";
+export const dynamic = "force-dynamic"
 
 const ReserveSlugPage = async ({
 	params,

@@ -81,6 +81,7 @@ const ReservationCard = ({
             <div className="flex justify-between">
                 <div className="flex flex-col w-[48%]">
                     <label htmlFor="">Date</label>
+                    {/* @ts-expect-error some */}
                     <DatePicker
                         selected={selectedDate}
                         onChange={handleChangeDate}

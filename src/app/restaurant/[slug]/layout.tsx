@@ -10,6 +10,7 @@ const renderTitle = (title: string) => {
     nameArray[nameArray.length - 1] = `(${nameArray.at(-1)})`
     return nameArray.join(" ")
 }
+export const dynamic = "force-dynamic"
 
 const LayoutRestaurant = ({ children, params }: { children: ReactNode, params: { slug: string } }) => {
     return (
@@ -20,7 +21,7 @@ const LayoutRestaurant = ({ children, params }: { children: ReactNode, params: {
                 </div>
             </div>
             <div className="flex m-auto w-2/3 justify-between items-start 0 -mt-11">
-                <div>
+                <div className="w-full">
                     <RestaurantNavbar slug={params.slug} />
                     {children}
                 </div>

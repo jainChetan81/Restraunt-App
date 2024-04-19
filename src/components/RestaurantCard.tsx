@@ -1,5 +1,5 @@
 import { calculateReviewRatingAverage } from "@/utils";
-import { RestaurantCard } from "@/server/fetcher";
+import { type RestaurantCard } from "@/server/fetcher";
 import { PRICE } from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";

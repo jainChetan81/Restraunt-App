@@ -3,13 +3,15 @@ import Image from "next/image";
 import ReservationCard from "./components/ReservationCard";
 import { calculateReviewRatingAverage } from "@/utils";
 import Stars from "@/components/Stars";
+export const dynamic = "force-dynamic"
 
 const RestaurantDetailsPage = async ({ params }: { params: { slug: string } }) => {
 	const restaurant = await getSingleRestaurant(params.slug)
 	return (
 		<div className="flex gap-2">
 			<div className="w-[70%] bg-white rounded p-3 shadow rounded-tr-none rounded-tl-none ">
-				<div className="mt-4 border-b pb-6">
+				<div className="mt-4 border-b pb-6 grid justify-center">
+					<Image src={restaurant.main_image} alt="" width={400} height={200} fetchPriority="high" />
 					<h1 className="font-bold text-6xl">{restaurant?.name}</h1>
 				</div>
 				<div className="flex items-end">
